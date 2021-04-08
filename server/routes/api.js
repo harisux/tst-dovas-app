@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { throwError } = require('rxjs');
 const Nudo = require('../models/nudo');
 
-const db = "mongodb+srv://dbUser1:BFW4x6i6IL4EcKvW@cluster0.m3tyd.mongodb.net/dovasDb?retryWrites=true&w=majority"
+const db = "mongodb+srv://XXXXXX"
 mongoose.Promise = global.Promise;
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true}, function(err){
     if (err) {
