@@ -1,0 +1,121 @@
+<div class="div-accordion">
+    <mat-accordion class="accor">
+        <mat-expansion-panel [disabled]="disTable" [expanded]="expTable">
+            <mat-expansion-panel-header>
+                <mat-panel-title><span class="bold">Nudos</span></mat-panel-title>
+                <mat-panel-description>Lista de nudos
+                </mat-panel-description>
+            </mat-expansion-panel-header>        
+
+            <div class="containerMatTable">
+                <table mat-table class="tablaRedondeada" [dataSource]="dSNudos">
+                    <ng-container matColumnDef="orden">
+                        <th mat-header-cell *matHeaderCellDef> No. &nbsp;</th>
+                        <td mat-cell *matCellDef="let nudo"> {{nudo.orden}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="xPos">
+                        <th mat-header-cell *matHeaderCellDef> Pos. X &nbsp;</th>
+                        <td mat-cell *matCellDef="let nudo"> {{nudo.xPos}} m</td>
+                    </ng-container>
+                    <ng-container matColumnDef="yPos">
+                        <th mat-header-cell *matHeaderCellDef> Pos. Y &nbsp;</th>
+                        <td mat-cell *matCellDef="let nudo"> {{nudo.yPos}} m</td>
+                    </ng-container>
+                    <ng-container matColumnDef="xFza">
+                        <th mat-header-cell *matHeaderCellDef> Fuerza en X</th>
+                        <td mat-cell *matCellDef="let nudo"> {{nudo.xFza}} Tn</td>
+                    </ng-container>
+                    <ng-container matColumnDef="yFza">
+                        <th mat-header-cell *matHeaderCellDef> Fuerza en Y</th>
+                        <td mat-cell *matCellDef="let nudo"> {{nudo.yFza}} Tn</td>
+                    </ng-container>
+                    <ng-container matColumnDef="momem">
+                        <th mat-header-cell *matHeaderCellDef> Momento</th>
+                        <td mat-cell *matCellDef="let nudo"> {{nudo.momem}} Tn.m</td>
+                    </ng-container>                    
+                    <ng-container matColumnDef="editar">
+                        <th mat-header-cell *matHeaderCellDef>Editar</th>
+                        <td mat-cell *matCellDef="let nudo">
+                        <button mat-icon-button color="primary" (click)="clickBtnEdit(nudo)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="borrar">
+                        <th mat-header-cell *matHeaderCellDef>Borrar</th>
+                        <td mat-cell *matCellDef="let nudo">
+                        <button mat-icon-button color="primary" (click)="clickBtnDelete(nudo)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="dispCols; sticky:true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: dispCols;"></tr>
+                </table>
+            </div>
+
+        <div class="centerBtn">
+            <button mat-raised-button color="primary" (click)="clickBtnNew()">Agregar nudo</button>
+        </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel [disabled]="disEdit" [expanded]="expEdit">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Editar nudo</mat-panel-title>        
+            <mat-panel-description>
+                <span *ngIf="newEdit===undefined"> - </span>
+                <span *ngIf="newEdit===false">Editando nudo: {{nudoEdit.orden}} </span>
+                <span *ngIf="newEdit===true">Editando nuevo nudo</span>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="nudoFrm" (ngSubmit)="guardarFrm()">
+            <mat-form-field appearance="outline" class="disFrm">
+                <mat-label>Orden</mat-label>                
+                <input matInput type="number" formControlName="orden" autocomplete="off">
+                <mat-error *ngIf="nudoFrm.controls['orden'].hasError('required')">Por favor ingrese un orden</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Posici&oacute;n X</mat-label>                
+                <input matInput type="number" formControlName="xPos" autocomplete="off" 
+                    placeholder="Ingrese posici&oacute;n en X">
+                <span matSuffix>m</span>
+                <mat-error *ngIf="nudoFrm.controls['xPos'].hasError('required')">Por favor ingrese una posici&oacute;n en x</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Posici&oacute;n Y</mat-label>                
+                <input matInput type="number" formControlName="yPos" autocomplete="off" 
+                    placeholder="Ingrese posici&oacute;n en Y">
+                <span matSuffix>m</span>
+                <mat-error *ngIf="nudoFrm.controls['yPos'].hasError('required')">Por favor ingrese una posici&oacute;n en y</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Fuerza X</mat-label>                
+                <input matInput type="number" formControlName="xFza" autocomplete="off" 
+                    placeholder="Ingrese fuerza en X">
+                <span matSuffix>Tn</span>
+                <mat-error *ngIf="nudoFrm.controls['xFza'].hasError('required')">Por favor ingrese una fuerza en x</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Fuerza Y</mat-label>                
+                <input matInput type="number" formControlName="yFza" autocomplete="off" 
+                    placeholder="Ingrese fuerza en Y">
+                <span matSuffix>Tn</span>
+                <mat-error *ngIf="nudoFrm.controls['yFza'].hasError('required')">Por favor ingrese una fuerza en y</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Momento</mat-label>                
+                <input matInput type="number" formControlName="momem" autocomplete="off" 
+                    placeholder="Ingrese momento">
+                <span matSuffix>Tn.m</span>
+                <mat-error *ngIf="nudoFrm.controls['momem'].hasError('required')">Por favor ingrese un momento</mat-error>
+            </mat-form-field>
+            <div class="centerBtn">
+                <button mat-raised-button (mousedown)="clickBtnCancel()" color="accent">Cancelar</button>
+                <button mat-raised-button (click)="clickBtnSave()" color="primary" type="submit" [disabled]="!nudoFrm.valid">Guardar</button>
+            </div>
+        </form>
+
+    </mat-expansion-panel>
+    </mat-accordion>    
+</div>
